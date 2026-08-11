@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fjora — Travel with people you actually meet</title>
+<meta name="description" content="Fjora is a travel app built around real connection — Companions earned by crossing paths, real-time meetup Signals, and a private-first travel journal.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#10181F; --ink2:#182430; --line:#2B3742;
+    --paper:#F4EFE3; --dim:#C9C2B0;
+    --gold:#E7B96B; --coral:#FF6B4E; --teal:#4FAE9B;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink); color:var(--paper); font-family:'Inter',sans-serif;
+    line-height:1.6; overflow-x:hidden;
+  }
+  a{color:inherit;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  /* nav */
+  nav{
+    position:sticky; top:0; z-index:50; background:rgba(16,24,31,0.85); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex; align-items:center; justify-content:space-between; padding:18px 24px;}
+  .logo{font-family:'Fraunces',serif; font-size:22px; letter-spacing:0.5px;}
+  nav .cta-small{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em;
+    background:var(--gold); color:var(--ink); padding:10px 18px; border-radius:999px; text-decoration:none;
+    font-weight:500;
+  }
+
+  /* hero */
+  .hero{
+    position:relative; padding:100px 24px 90px; text-align:center; overflow:hidden;
+  }
+  .hero::before{
+    content:''; position:absolute; inset:0; z-index:0;
+    background:
+      radial-gradient(ellipse 600px 400px at 20% 10%, rgba(231,185,107,0.10), transparent),
+      radial-gradient(ellipse 500px 400px at 85% 30%, rgba(255,107,78,0.08), transparent),
+      radial-gradient(ellipse 500px 500px at 50% 90%, rgba(79,174,155,0.08), transparent);
+  }
+  .hero-inner{position:relative; z-index:1; max-width:720px; margin:0 auto;}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.14em;
+    color:var(--teal); margin-bottom:22px; display:inline-block;
+  }
+  h1{
+    font-family:'Fraunces',serif; font-weight:500; font-size:clamp(36px,6vw,58px);
+    line-height:1.08; margin-bottom:22px; letter-spacing:-0.01em;
+  }
+  h1 em{font-style:italic; color:var(--gold);}
+  .hero-sub{
+    font-size:18px; color:var(--dim); max-width:520px; margin:0 auto 36px; line-height:1.65;
+  }
+  .hero-form{
+    display:flex; gap:10px; max-width:420px; margin:0 auto; flex-wrap:wrap; justify-content:center;
+  }
+  .hero-form input[type=email]{
+    flex:1; min-width:220px; background:var(--ink2); border:1px solid var(--line); border-radius:10px;
+    padding:14px 16px; color:var(--paper); font-family:'Inter',sans-serif; font-size:14px; outline:none;
+  }
+  .hero-form input[type=email]:focus{border-color:var(--gold);}
+  .hero-form button{
+    background:var(--gold); color:var(--ink); border:none; border-radius:10px; padding:14px 24px;
+    font-family:'IBM Plex Mono',monospace; font-size:12px; text-transform:uppercase; letter-spacing:0.06em;
+    font-weight:500; cursor:pointer;
+  }
+  .hero-form button:hover{background:#f0c987;}
+  .form-note{
+    font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--dim); margin-top:14px; opacity:0.7;
+  }
+  #formMsg{margin-top:14px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--teal); min-height:18px;}
+
+  /* stamp strip visual */
+  .stampstrip{
+    display:flex; justify-content:center; gap:18px; margin-top:56px; flex-wrap:wrap;
+  }
+  .stamp{
+    width:64px; height:64px; border-radius:50%; border:1.5px dashed var(--gold);
+    display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono',monospace;
+    font-size:9px; color:var(--gold); text-align:center; line-height:1.2; opacity:0.85;
+  }
+  .stamp:nth-child(2){border-color:var(--coral); color:var(--coral); transform:rotate(6deg);}
+  .stamp:nth-child(3){border-color:var(--teal); color:var(--teal); transform:rotate(-5deg);}
+  .stamp:nth-child(1){transform:rotate(-8deg);}
+  .stamp:nth-child(4){transform:rotate(4deg);}
+
+  /* features */
+  .section{padding:90px 24px;}
+  .section-head{text-align:center; max-width:600px; margin:0 auto 64px;}
+  .section-label{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.12em;
+    color:var(--teal); margin-bottom:14px;
+  }
+  .section h2{font-family:'Fraunces',serif; font-size:clamp(28px,4vw,38px); font-weight:500; line-height:1.2;}
+  .features{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:2px; background:var(--line); border:1px solid var(--line); border-radius:18px; overflow:hidden;}
+  .feature{background:var(--ink2); padding:36px 30px;}
+  .feature .icon{width:38px; height:38px; margin-bottom:20px; color:var(--gold);}
+  .feature h3{font-family:'Fraunces',serif; font-size:19px; margin-bottom:12px; font-weight:500;}
+  .feature p{color:var(--dim); font-size:14px; line-height:1.65;}
+
+  /* companion callout */
+  .callout{
+    background:linear-gradient(135deg, rgba(231,185,107,0.08), rgba(255,107,78,0.05));
+    border:1px solid var(--line); border-radius:20px; padding:56px 40px; text-align:center; max-width:760px; margin:0 auto;
+  }
+  .callout .word{font-family:'Fraunces',serif; font-size:clamp(24px,3.4vw,32px); line-height:1.5; font-weight:400;}
+  .callout .word b{color:var(--gold); font-weight:500;}
+
+  /* map visual */
+  .mapvisual{
+    max-width:760px; margin:0 auto; border-radius:20px; border:1px solid var(--line); overflow:hidden;
+    background:radial-gradient(circle at 30% 20%, #24404A 0%, #16232B 60%, #0F1922 100%);
+    padding:70px 30px; position:relative; min-height:220px;
+  }
+  .mapvisual svg{position:absolute; inset:0; width:100%; height:100%;}
+  .mapvisual .stamp{position:absolute;}
+  .mapvisual .s1{top:30px; left:12%;} .mapvisual .s2{top:100px; left:38%;}
+  .mapvisual .s3{top:50px; right:15%;} .mapvisual .s4{bottom:24px; left:22%;}
+
+  /* footer */
+  footer{border-top:1px solid var(--line); padding:44px 24px; text-align:center;}
+  footer .logo{margin-bottom:8px;}
+  footer p{color:var(--dim); font-size:12px; font-family:'IBM Plex Mono',monospace;}
+
+  @media (max-width:640px){
+    .section{padding:64px 20px;}
+    .callout{padding:36px 24px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">Fjora</div>
+    <a href="#waitlist" class="cta-small">Join the waitlist</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Coming soon</span>
+    <h1>Travel with people<br>you actually <em>meet</em>.</h1>
+    <p class="hero-sub">
+      Fjora is a travel app built around real connection — not follower counts.
+      Track everywhere you've been, plan and journal privately, and find people
+      to meet up with wherever you land.
+    </p>
+    <form class="hero-form" id="waitlistForm">
+      <input type="email" id="emailInput" placeholder="you@email.com" required autocomplete="email">
+      <button type="submit">Join the waitlist</button>
+    </form>
+    <div id="formMsg"></div>
+    <div class="form-note">No spam. One email when we launch.</div>
+
+    <div class="stampstrip">
+      <div class="stamp">TÜRK<br>IYE</div>
+      <div class="stamp">ITAL<br>IA</div>
+      <div class="stamp">日本</div>
+      <div class="stamp">USA</div>
+    </div>
+  </div>
+</header>
+
+<section class="section" id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">What makes it different</div>
+      <h2>Not another follower count.</h2>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8.5 8.5a5 5 0 0 1 7 0M5.5 5.5a9 9 0 0 1 13 0"/><circle cx="12" cy="13" r="1.6" fill="currentColor" stroke="none"/><path d="M12 14.6V19"/></svg>
+        <h3>Signals</h3>
+        <p>Send up a real-time flare — "heading to this bar tonight, come say hi" — and meet up with other travelers nearby. No live location tracking, ever.</p>
+      </div>
+      <div class="feature">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg>
+        <h3>Your world, mapped</h3>
+        <p>An interactive scratch map of everywhere you've checked in — countries, states, and every trip within them, with photos and ratings for each place.</p>
+      </div>
+      <div class="feature">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5V6a2 2 0 0 1 2-2h11a1 1 0 0 1 1 1v13"/><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H19"/></svg>
+        <h3>Private-first journal</h3>
+        <p>Plan itineraries and write freely — nothing is shared until you choose to. Sharing is a decision you make per entry, not a default.</p>
+      </div>
+      <div class="feature">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="8.5"/><path d="M14.8 9.2l-2 4.9-4.9 2 2-4.9z"/></svg>
+        <h3>Find things to do</h3>
+        <p>Discover excursions and activities wherever you are, and book straight through to the source — no middleman fees.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="callout">
+      <p class="word">
+        We don't call them followers. We call them <b>Companions</b> —
+        people you've actually traveled with, not just clicked follow on.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">The dashboard</div>
+      <h2>Every place, one map.</h2>
+    </div>
+    <div class="mapvisual">
+      <svg viewBox="0 0 700 220">
+        <path d="M40,140 Q140,60 260,110 T480,80 T660,130" stroke="#3A4C57" stroke-width="1" fill="none" stroke-dasharray="3 5"/>
+        <path d="M80,190 Q200,140 340,170 T620,160" stroke="#3A4C57" stroke-width="1" fill="none" stroke-dasharray="3 5"/>
+      </svg>
+      <div class="stamp s1">TÜRK<br>IYE</div>
+      <div class="stamp s2" style="border-color:var(--coral); color:var(--coral); transform:rotate(6deg);">ITAL<br>IA</div>
+      <div class="stamp s3" style="border-color:var(--teal); color:var(--teal); transform:rotate(-5deg);">日本</div>
+      <div class="stamp s4">USA</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="waitlist">
+  <div class="wrap">
+    <div class="callout">
+      <p class="word" style="margin-bottom:28px;">Be first to know when Fjora lands.</p>
+      <form class="hero-form" id="waitlistForm2" style="margin:0 auto;">
+        <input type="email" id="emailInput2" placeholder="you@email.com" required autocomplete="email">
+        <button type="submit">Join the waitlist</button>
+      </form>
+      <div id="formMsg2" class="mono" style="margin-top:14px; font-size:12px; color:var(--teal); min-height:18px;"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo">Fjora</div>
+  <p>&copy; 2026 Fjora. Travel with people you actually meet.</p>
+</footer>
+
+<script>
+/*
+  WAITLIST SUBMISSION
+  --------------------------------------------------------------
+  Posts new emails straight into the `waitlist` table in the same
+  Supabase project backing wayfare-api (see its prisma/schema.prisma
+  for the Waitlist model + migrations for the table/RLS/policy).
+  RLS restricts the anon role to INSERT only — this page can add an
+  email but can't read, edit, or delete the list back out.
+*/
+const SUPABASE_URL = "https://vzvckpiaxyqxzsptxmfo.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ6dmNrcGlheHlxeHpzcHR4bWZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY0MTE3MTYsImV4cCI6MjEwMTk4NzcxNn0.Gtw7CQ70aUeOyKInPNJXx0-F-OPgkNNCnJQa8CO6uTs";
+
+async function submitEmail(email, msgEl){
+  if(!email || !email.includes('@')){
+    msgEl.textContent = "Please enter a valid email.";
+    msgEl.style.color = "#FF6B4E";
+    return;
+  }
+  msgEl.textContent = "Joining...";
+  msgEl.style.color = "#C9C2B0";
+
+  // If Supabase isn't configured yet, fall back to a friendly message
+  // instead of failing silently.
+  if(SUPABASE_URL.includes("YOUR_") || SUPABASE_ANON_KEY.includes("YOUR_")){
+    console.warn("Supabase not configured yet — see comment block above.");
+    msgEl.textContent = "Thanks! (Waitlist storage not connected yet — see code comments.)";
+    msgEl.style.color = "#4FAE9B";
+    return;
+  }
+
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify({ email })
+    });
+    if(res.ok || res.status === 201){
+      msgEl.textContent = "You're on the list — we'll email you at launch.";
+      msgEl.style.color = "#4FAE9B";
+    } else if(res.status === 409){
+      msgEl.textContent = "You're already on the list!";
+      msgEl.style.color = "#4FAE9B";
+    } else {
+      throw new Error("Request failed");
+    }
+  } catch(err){
+    msgEl.textContent = "Something went wrong — please try again.";
+    msgEl.style.color = "#FF6B4E";
+  }
+}
+
+document.getElementById('waitlistForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const email = document.getElementById('emailInput').value.trim();
+  submitEmail(email, document.getElementById('formMsg'));
+});
+document.getElementById('waitlistForm2').addEventListener('submit', function(e){
+  e.preventDefault();
+  const email = document.getElementById('emailInput2').value.trim();
+  submitEmail(email, document.getElementById('formMsg2'));
+});
+</script>
+</body>
+</html>
