@@ -4,319 +4,459 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fjora — Travel with people you actually meet</title>
-<meta name="description" content="Fjora is a travel app built around real connection — Companions earned by crossing paths, real-time meetup Signals, and a private-first travel journal.">
+<meta name="description" content="Fjora is the travel app built for real-life connection. Post a Gather to meet travelers nearby, map everywhere you've been, plan trips with AI, and travel safer with Trusted Contacts. Met, not matched.">
+<meta name="theme-color" content="#0A101C">
+<meta property="og:title" content="Fjora — Travel with people you actually meet">
+<meta property="og:description" content="Gathers, Companions, a scratch map of your world, and a private-first travel journal. Met, not matched.">
+<meta property="og:image" content="https://fjoraapp.com/assets/img/hero.jpg">
+<meta property="og:url" content="https://fjoraapp.com">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="assets/seal-light.png">
+<link rel="apple-touch-icon" href="assets/seal-light.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --ink:#10181F; --ink2:#182430; --line:#2B3742;
-    --paper:#F4EFE3; --dim:#C9C2B0;
-    --gold:#E7B96B; --coral:#FF6B4E; --teal:#4FAE9B;
-  }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--ink); color:var(--paper); font-family:'Inter',sans-serif;
-    line-height:1.6; overflow-x:hidden;
-  }
-  a{color:inherit;}
-  .wrap{max-width:1080px; margin:0 auto; padding:0 24px;}
-  .mono{font-family:'IBM Plex Mono',monospace;}
-
-  /* nav */
-  nav{
-    position:sticky; top:0; z-index:50; background:rgba(16,24,31,0.85); backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
-  }
-  nav .wrap{display:flex; align-items:center; justify-content:space-between; padding:18px 24px;}
-  .logo{font-family:'Fraunces',serif; font-size:22px; letter-spacing:0.5px;}
-  nav .cta-small{
-    font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em;
-    background:var(--gold); color:var(--ink); padding:10px 18px; border-radius:999px; text-decoration:none;
-    font-weight:500;
-  }
-
-  /* hero */
-  .hero{
-    position:relative; padding:100px 24px 90px; text-align:center; overflow:hidden;
-  }
-  .hero::before{
-    content:''; position:absolute; inset:0; z-index:0;
-    background:
-      radial-gradient(ellipse 600px 400px at 20% 10%, rgba(231,185,107,0.10), transparent),
-      radial-gradient(ellipse 500px 400px at 85% 30%, rgba(255,107,78,0.08), transparent),
-      radial-gradient(ellipse 500px 500px at 50% 90%, rgba(79,174,155,0.08), transparent);
-  }
-  .hero-inner{position:relative; z-index:1; max-width:720px; margin:0 auto;}
-  .eyebrow{
-    font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.14em;
-    color:var(--teal); margin-bottom:22px; display:inline-block;
-  }
-  h1{
-    font-family:'Fraunces',serif; font-weight:500; font-size:clamp(36px,6vw,58px);
-    line-height:1.08; margin-bottom:22px; letter-spacing:-0.01em;
-  }
-  h1 em{font-style:italic; color:var(--gold);}
-  .hero-sub{
-    font-size:18px; color:var(--dim); max-width:520px; margin:0 auto 36px; line-height:1.65;
-  }
-  .hero-form{
-    display:flex; gap:10px; max-width:420px; margin:0 auto; flex-wrap:wrap; justify-content:center;
-  }
-  .hero-form input[type=email]{
-    flex:1; min-width:220px; background:var(--ink2); border:1px solid var(--line); border-radius:10px;
-    padding:14px 16px; color:var(--paper); font-family:'Inter',sans-serif; font-size:14px; outline:none;
-  }
-  .hero-form input[type=email]:focus{border-color:var(--gold);}
-  .hero-form button{
-    background:var(--gold); color:var(--ink); border:none; border-radius:10px; padding:14px 24px;
-    font-family:'IBM Plex Mono',monospace; font-size:12px; text-transform:uppercase; letter-spacing:0.06em;
-    font-weight:500; cursor:pointer;
-  }
-  .hero-form button:hover{background:#f0c987;}
-  .form-note{
-    font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--dim); margin-top:14px; opacity:0.7;
-  }
-  #formMsg{margin-top:14px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--teal); min-height:18px;}
-
-  /* stamp strip visual */
-  .stampstrip{
-    display:flex; justify-content:center; gap:18px; margin-top:56px; flex-wrap:wrap;
-  }
-  .stamp{
-    width:64px; height:64px; border-radius:50%; border:1.5px dashed var(--gold);
-    display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono',monospace;
-    font-size:9px; color:var(--gold); text-align:center; line-height:1.2; opacity:0.85;
-  }
-  .stamp:nth-child(2){border-color:var(--coral); color:var(--coral); transform:rotate(6deg);}
-  .stamp:nth-child(3){border-color:var(--teal); color:var(--teal); transform:rotate(-5deg);}
-  .stamp:nth-child(1){transform:rotate(-8deg);}
-  .stamp:nth-child(4){transform:rotate(4deg);}
-
-  /* features */
-  .section{padding:90px 24px;}
-  .section-head{text-align:center; max-width:600px; margin:0 auto 64px;}
-  .section-label{
-    font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.12em;
-    color:var(--teal); margin-bottom:14px;
-  }
-  .section h2{font-family:'Fraunces',serif; font-size:clamp(28px,4vw,38px); font-weight:500; line-height:1.2;}
-  .features{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:2px; background:var(--line); border:1px solid var(--line); border-radius:18px; overflow:hidden;}
-  .feature{background:var(--ink2); padding:36px 30px;}
-  .feature .icon{width:38px; height:38px; margin-bottom:20px; color:var(--gold);}
-  .feature h3{font-family:'Fraunces',serif; font-size:19px; margin-bottom:12px; font-weight:500;}
-  .feature p{color:var(--dim); font-size:14px; line-height:1.65;}
-
-  /* companion callout */
-  .callout{
-    background:linear-gradient(135deg, rgba(231,185,107,0.08), rgba(255,107,78,0.05));
-    border:1px solid var(--line); border-radius:20px; padding:56px 40px; text-align:center; max-width:760px; margin:0 auto;
-  }
-  .callout .word{font-family:'Fraunces',serif; font-size:clamp(24px,3.4vw,32px); line-height:1.5; font-weight:400;}
-  .callout .word b{color:var(--gold); font-weight:500;}
-
-  /* map visual */
-  .mapvisual{
-    max-width:760px; margin:0 auto; border-radius:20px; border:1px solid var(--line); overflow:hidden;
-    background:radial-gradient(circle at 30% 20%, #24404A 0%, #16232B 60%, #0F1922 100%);
-    padding:70px 30px; position:relative; min-height:220px;
-  }
-  .mapvisual svg{position:absolute; inset:0; width:100%; height:100%;}
-  .mapvisual .stamp{position:absolute;}
-  .mapvisual .s1{top:30px; left:12%;} .mapvisual .s2{top:100px; left:38%;}
-  .mapvisual .s3{top:50px; right:15%;} .mapvisual .s4{bottom:24px; left:22%;}
-
-  /* footer */
-  footer{border-top:1px solid var(--line); padding:44px 24px; text-align:center;}
-  footer .logo{margin-bottom:8px;}
-  footer p{color:var(--dim); font-size:12px; font-family:'IBM Plex Mono',monospace;}
-
-  @media (max-width:640px){
-    .section{padding:64px 20px;}
-    .callout{padding:36px 24px;}
-  }
-</style>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+<link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
 
-<nav>
+<!-- ================= NAV ================= -->
+<nav class="nav" id="nav">
   <div class="wrap">
-    <div class="logo">Fjora</div>
-    <a href="#waitlist" class="cta-small">Join the waitlist</a>
+    <a href="#top" class="brand"><img src="assets/seal-dark.png" alt="Fjora seal"><span>Fjora</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="#gather">Gather</a>
+      <a href="#world">Your World</a>
+      <a href="#toolkit">Toolkit</a>
+      <a href="#demo">How it works</a>
+      <a href="#safety">Safety</a>
+      <a href="#partners">Partners</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#" class="btn btn-ghost btn-sm" data-link="signin"><i class="ph ph-sign-in"></i> Sign in</a>
+      <a href="#download" class="btn btn-gold btn-sm">Get the app</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu"><i class="ph ph-list"></i></button>
+    </div>
   </div>
 </nav>
 
-<header class="hero">
-  <div class="hero-inner">
-    <span class="eyebrow">Coming soon</span>
-    <h1>Travel with people<br>you actually <em>meet</em>.</h1>
-    <p class="hero-sub">
-      Fjora is a travel app built around real connection — not follower counts.
-      Track everywhere you've been, plan and journal privately, and find people
-      to meet up with wherever you land.
-    </p>
-    <form class="hero-form" id="waitlistForm">
-      <input type="email" id="emailInput" placeholder="you@email.com" required autocomplete="email">
-      <button type="submit">Join the waitlist</button>
-    </form>
-    <div id="formMsg"></div>
-    <div class="form-note">No spam. One email when we launch.</div>
+<!-- ================= HERO ================= -->
+<header class="hero" id="top">
+  <div class="hero-bg"><img src="assets/img/hero.jpg" alt="Friends who met while traveling, watching the sunset together"></div>
+  <div class="wrap">
+    <div>
+      <span class="eyebrow rv"><span class="dot"></span>Launching in Costa Rica this season</span>
+      <h1 class="h-display rv d1">Travel with people you actually <em>meet.</em></h1>
+      <p class="lede rv d2">Fjora turns "anyone want to split a canyoning tour tomorrow?" into a real plan with real people in minutes. No swiping, no follower counts, no live tracking. Just Companions you've crossed paths with, and a map of every place you've been.</p>
+      <div class="hero-actions rv d3">
+        <div class="store-row">
+          <a href="#" class="store" data-link="ios"><i class="ph-fill ph-apple-logo"></i><div><small>Download on the</small><b>App Store</b></div><span class="soon">Soon</span></a>
+          <a href="#" class="store" data-link="android"><i class="ph-fill ph-google-play-logo"></i><div><small>Get it on</small><b>Google Play</b></div><span class="soon">Soon</span></a>
+        </div>
+        <form class="waitlist" data-waitlist>
+          <input type="email" placeholder="Your email address" required autocomplete="email" aria-label="Email address">
+          <button class="btn btn-gold" type="submit">Join the waitlist</button>
+        </form>
+        <div class="form-msg" aria-live="polite"></div>
+      </div>
+    </div>
 
-    <div class="stampstrip">
-      <div class="stamp">TÜRK<br>IYE</div>
-      <div class="stamp">ITAL<br>IA</div>
-      <div class="stamp">日本</div>
-      <div class="stamp">USA</div>
+    <div class="hero-phone rv d2">
+      <div class="float-card fc-1"><img src="assets/people/priya.jpg" alt=""><div><b>Priya joined your Gather</b><span>Canyoning · tomorrow 8:00 AM</span></div></div>
+      <div class="float-card fc-2"><div class="ico"><i class="ph-duotone ph-seal-check"></i></div><div><b>New stamp: Costa Rica</b><span>Country #14 on your map</span></div></div>
+      <div class="float-card fc-3"><img src="assets/people/lucas.jpg" alt=""><div><b>Lucas is now a Companion</b><span>You met in La Fortuna</span></div></div>
+      <div class="phone"><div class="screen" id="heroScreen"></div></div>
     </div>
   </div>
+  <div class="scroll-hint">Scroll</div>
 </header>
 
-<section class="section" id="features">
+<!-- ================= DESTINATION MARQUEE ================= -->
+<div class="marquee" aria-hidden="true"><div class="marquee-track" id="marquee"></div></div>
+
+<!-- ================= MANIFESTO ================= -->
+<section class="manifesto">
   <div class="wrap">
-    <div class="section-head">
-      <div class="section-label">What makes it different</div>
-      <h2>Not another follower count.</h2>
+    <img class="seal-big rv" src="assets/seal-dark.png" alt="">
+    <h2 class="h2 rv">Social apps made travel about being <em>seen.</em><br>We made it about who you <em>meet.</em></h2>
+    <div class="nos">
+      <div class="no rv"><span class="x">Followers</span><b>Companions</b><p>You can't buy them or farm them. A Companion is someone you've actually crossed paths with on the road.</p></div>
+      <div class="no rv d1"><span class="x">Swipe to match</span><b>Gather to meet</b><p>Post a plan, a place and a time. The people who show up are the people who wanted to do the same thing.</p></div>
+      <div class="no rv d2"><span class="x">Live location</span><b>Places, not pins</b><p>Gathers never touch your GPS. You pick the bar, the trailhead or the hostel, never your exact position.</p></div>
     </div>
-    <div class="features">
-      <div class="feature">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8.5 8.5a5 5 0 0 1 7 0M5.5 5.5a9 9 0 0 1 13 0"/><circle cx="12" cy="13" r="1.6" fill="currentColor" stroke="none"/><path d="M12 14.6V19"/></svg>
-        <h3>Signals</h3>
-        <p>Send up a real-time flare — "heading to this bar tonight, come say hi" — and meet up with other travelers nearby. No live location tracking, ever.</p>
+  </div>
+</section>
+
+<!-- ================= GATHER ================= -->
+<section class="section" id="gather" style="padding-top:40px">
+  <div class="wrap feature">
+    <div class="f-copy">
+      <span class="eyebrow rv">01 · Gather</span>
+      <h2 class="h2 rv">Fire up a plan. <em>Watch it fill up.</em></h2>
+      <p class="lede rv">A Gather is a real-time flare to every Fjora traveler nearby. Split a tour, share a shuttle, find a dinner table, or just get a crew together for sunset beers. You set the spots and people join the chat.</p>
+      <ul class="f-list">
+        <li class="rv"><span class="ic"><i class="ph-duotone ph-users-three"></i></span><div><b>Spots, not strangers</b><span>Set how many people you want. When it's full it says so, and latecomers can join as backups.</span></div></li>
+        <li class="rv d1"><span class="ic"><i class="ph-duotone ph-chats-circle"></i></span><div><b>Instant group chat</b><span>Joining drops you into a live chat with everyone going. Messages arrive in real time, no refreshing.</span></div></li>
+        <li class="rv d2"><span class="ic"><i class="ph-duotone ph-magnifying-glass"></i></span><div><b>Search any town, any radius</b><span>See what's happening near La Fortuna tonight, or check Santa Teresa before you even arrive.</span></div></li>
+      </ul>
+      <div class="scenario rv">
+        <span class="pill"><i class="ph ph-mountains"></i>Split a canyoning tour</span>
+        <span class="pill"><i class="ph ph-van"></i>Share a shuttle</span>
+        <span class="pill"><i class="ph ph-beer-stein"></i>Sunset beers</span>
+        <span class="pill"><i class="ph ph-waves"></i>Dawn surf</span>
       </div>
-      <div class="feature">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg>
-        <h3>Your world, mapped</h3>
-        <p>An interactive scratch map of everywhere you've checked in — countries, states, and every trip within them, with photos and ratings for each place.</p>
-      </div>
-      <div class="feature">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5V6a2 2 0 0 1 2-2h11a1 1 0 0 1 1 1v13"/><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H19"/></svg>
-        <h3>Private-first journal</h3>
-        <p>Plan itineraries and write freely — nothing is shared until you choose to. Sharing is a decision you make per entry, not a default.</p>
-      </div>
-      <div class="feature">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="8.5"/><path d="M14.8 9.2l-2 4.9-4.9 2 2-4.9z"/></svg>
-        <h3>Find things to do</h3>
-        <p>Discover excursions and activities wherever you are, and book straight through to the source — no middleman fees.</p>
+    </div>
+    <div class="f-visual rv d1">
+      <div class="glow" style="background:var(--coral);left:10%;top:10%"></div>
+      <div class="phone"><div class="screen" id="gatherScreen"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WORLD MAP ================= -->
+<section class="section" id="world">
+  <div class="wrap">
+    <div class="center sec-head">
+      <span class="eyebrow rv">02 · Your World</span>
+      <h2 class="h2 rv">Every country, every city, every <em>check-in.</em></h2>
+      <p class="lede rv">Fjora builds a scratch map of your life on the road. Check in anywhere and add photos, ratings and a note. Each new country gets a passport stamp. Hover the map to explore Maya's world.</p>
+    </div>
+    <div class="worldmap rv" id="worldmap">
+      <div class="map-legend"><span><i style="background:var(--gold)"></i>Visited</span><span><i style="background:var(--coral);height:2px;border-radius:0"></i>Upcoming trip</span></div>
+      <div class="map-tip" id="mapTip"></div>
+      <div class="map-stats">
+        <div class="map-stat"><b data-count="14">0</b><span>Countries</span></div>
+        <div class="map-stat"><b data-count="9">0</b><span>States</span></div>
+        <div class="map-stat"><b data-count="186">0</b><span>Check-ins</span></div>
+        <div class="map-stat"><b data-count="23">0</b><span>Companions</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section">
-  <div class="wrap">
-    <div class="callout">
-      <p class="word">
-        We don't call them followers. We call them <b>Companions</b> —
-        people you've actually traveled with, not just clicked follow on.
-      </p>
+<!-- ================= COMPANIONS ================= -->
+<section class="section light" id="companions">
+  <div class="wrap feature flip">
+    <div class="f-copy">
+      <span class="eyebrow rv">03 · Companions</span>
+      <h2 class="h2 rv">Connections you <em>earned</em> on the road.</h2>
+      <p class="lede rv">When you meet someone through a Gather, a hostel, or a 6am volcano hike, add them as a Companion. Their check-ins show up in your Explore feed, you can plan trips together, and in five years you'll still remember where you met.</p>
+      <ul class="f-list">
+        <li class="rv"><span class="ic"><i class="ph-duotone ph-handshake"></i></span><div><b>Met, not matched</b><span>No algorithm picks your people. You add Companions by username after you've met.</span></div></li>
+        <li class="rv d1"><span class="ic"><i class="ph-duotone ph-users"></i></span><div><b>Plan together</b><span>Invite Companions to a journey so they can co-edit the itinerary, budget and packing list.</span></div></li>
+        <li class="rv d2"><span class="ic"><i class="ph-duotone ph-lock-key"></i></span><div><b>Hard to find by accident</b><span>People find you by username, never by email, so nobody can look you up with an address they guessed.</span></div></li>
+      </ul>
+    </div>
+    <div class="f-visual rv d1">
+      <div class="comp-cards">
+        <div class="comp-card cc-1">
+          <img class="cover" src="assets/img/kyoto.jpg" alt="">
+          <div class="body">
+            <img class="av" src="assets/people/priya.jpg" alt="Priya Raman">
+            <h4>Priya Raman</h4><div class="handle">@priyaontheroad · Bengaluru → everywhere</div>
+            <div class="met"><i class="ph-duotone ph-map-pin"></i><span>Met at <b>Fushimi Inari, Kyoto</b> · Apr 2026</span></div>
+            <div class="mini-stats"><div><b>22</b><span>Countries</span></div><div><b>4</b><span>Trips together</span></div><div><b>311</b><span>Check-ins</span></div></div>
+          </div>
+        </div>
+        <div class="comp-card cc-2">
+          <img class="cover" src="assets/img/rafting.jpg" alt="">
+          <div class="body">
+            <img class="av" src="assets/people/lucas.jpg" alt="Lucas Ferreira">
+            <h4>Lucas Ferreira</h4><div class="handle">@lucasf · Porto, Portugal</div>
+            <div class="met"><i class="ph-duotone ph-users-three"></i><span>Met via a <b>Gather</b> · Balsa River rafting</span></div>
+            <div class="mini-stats"><div><b>17</b><span>Countries</span></div><div><b>2</b><span>Trips together</span></div><div><b>148</b><span>Check-ins</span></div></div>
+          </div>
+        </div>
+        <div class="badge-earned"><i class="ph-fill ph-seal-check"></i>Companion added</div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="section">
+<!-- ================= EXPLORE ================= -->
+<section class="section" id="explore">
   <div class="wrap">
-    <div class="section-head">
-      <div class="section-label">The dashboard</div>
-      <h2>Every place, one map.</h2>
+    <div class="sec-head" style="max-width:720px">
+      <span class="eyebrow rv">04 · Explore</span>
+      <h2 class="h2 rv">Recommendations from people you <em>trust.</em></h2>
+      <p class="lede rv">Forget anonymous reviews. Explore shows real check-ins from travelers grouped by spot, with photos, ratings and the one-line tip that matters. Filter to just your Companions when you want advice from people you know.</p>
     </div>
-    <div class="mapvisual">
-      <svg viewBox="0 0 700 220">
-        <path d="M40,140 Q140,60 260,110 T480,80 T660,130" stroke="#3A4C57" stroke-width="1" fill="none" stroke-dasharray="3 5"/>
-        <path d="M80,190 Q200,140 340,170 T620,160" stroke="#3A4C57" stroke-width="1" fill="none" stroke-dasharray="3 5"/>
-      </svg>
-      <div class="stamp s1">TÜRK<br>IYE</div>
-      <div class="stamp s2" style="border-color:var(--coral); color:var(--coral); transform:rotate(6deg);">ITAL<br>IA</div>
-      <div class="stamp s3" style="border-color:var(--teal); color:var(--teal); transform:rotate(-5deg);">日本</div>
-      <div class="stamp s4">USA</div>
+    <div class="explore-grid" id="exploreGrid"></div>
+  </div>
+</section>
+
+<!-- ================= TOOLKIT ================= -->
+<section class="section light" id="toolkit">
+  <div class="wrap">
+    <div class="center sec-head">
+      <span class="eyebrow rv">05 · Plan &amp; Reflect</span>
+      <h2 class="h2 rv">Everything else a trip needs, <em>in one app.</em></h2>
+      <p class="lede rv">Ditch the spreadsheet, the notes app, the currency site and the shared doc nobody updates. Fjora handles the logistics so you can stay in the moment.</p>
+    </div>
+    <div class="bento">
+      <div class="tile t-gold span-3 rv" id="aiTile">
+        <div class="ic"><i class="ph-duotone ph-sparkle"></i></div>
+        <h3>Itineraries drafted by AI</h3>
+        <p>Enter a destination, number of days, your pace and what you're into. Get a day-by-day draft you can edit before anything is saved.</p>
+        <span class="ai-flag"><i class="ph-fill ph-sparkle"></i>AI draft · review and edit before adding</span>
+        <div class="ai-draft">
+          <div class="ai-day" style="transition-delay:.1s"><b>Day 1</b><span>Alfama on foot, sunset at Miradouro da Graça, fado dinner</span></div>
+          <div class="ai-day" style="transition-delay:.3s"><b>Day 2</b><span>Tram 28 early, LX Factory, pastéis de nata in Belém</span></div>
+          <div class="ai-day" style="transition-delay:.5s"><b>Day 3</b><span>Day trip to Sintra: Pena Palace &amp; Quinta da Regaleira</span></div>
+        </div>
+      </div>
+      <div class="tile dark span-3 rv d1">
+        <div class="ic" style="background:rgba(227,168,94,.14);color:var(--gold)"><i class="ph-duotone ph-confetti"></i></div>
+        <h3>Your Year in Review</h3>
+        <p>Every check-in adds up. At the end of the year, see your days on the road, trips, countries and photos.</p>
+        <div class="yr"><div class="big" data-count="61">0</div><div class="lab">days on the<br>road in 2026</div></div>
+        <div class="yr-grid"><div><b>6</b><span>Trips</span></div><div><b>5</b><span>Countries</span></div><div><b>438</b><span>Photos</span></div></div>
+      </div>
+      <div class="tile t-teal span-2 rv">
+        <div class="ic"><i class="ph-duotone ph-wallet"></i></div>
+        <h3>Budgets in any currency</h3>
+        <p>Log expenses in colones, yen or euros. Fjora converts everything back to your home currency.</p>
+        <div class="budget"><div class="ring" style="--p:69"><span>69%</span></div>
+          <div class="exp"><div><span>Rafting tour</span><small>₡38,500</small></div><div><span>Hostel · 3 nights</span><small>$96</small></div><div><span>Casado lunch</span><small>₡4,200</small></div></div>
+        </div>
+      </div>
+      <div class="tile t-coral span-2 rv d1">
+        <div class="ic"><i class="ph-duotone ph-microphone"></i></div>
+        <h3>A journal you can talk to</h3>
+        <p>Dictate an entry on the bus. Entries are private by default, and you choose which ones Companions see.</p>
+        <div class="voice" id="voice"></div>
+        <div class="priv"><span class="toggle" id="shareToggle"></span>Share with Companions</div>
+      </div>
+      <div class="tile t-coral span-2 rv d2">
+        <div class="ic"><i class="ph-duotone ph-suitcase-rolling"></i></div>
+        <h3>Packing lists that learn</h3>
+        <p>Copy last trip's list in one tap, then tick things off.</p>
+        <div class="pack">
+          <label><input type="checkbox" checked><span>Reef-safe sunscreen</span></label>
+          <label><input type="checkbox" checked><span>Quick-dry towel</span></label>
+          <label><input type="checkbox"><span>Rain jacket (it's the rainforest)</span></label>
+          <label><input type="checkbox"><span>Passport + yellow fever card</span></label>
+        </div>
+      </div>
+      <div class="tile t-gold span-2 rv">
+        <div class="ic"><i class="ph-duotone ph-arrows-left-right"></i></div>
+        <h3>Currency converter</h3>
+        <p>Live exchange rates, built in. No more guessing what ₡10,000 actually costs.</p>
+        <div class="fx"><div>₡10,000<small>Costa Rican colón</small></div><i class="ph ph-arrow-right"></i><div>$19.42<small>US dollar</small></div></div>
+      </div>
+      <div class="tile t-teal span-2 rv d1">
+        <div class="ic"><i class="ph-duotone ph-target"></i></div>
+        <h3>Bucket list</h3>
+        <p>The places you swear you'll get to. Cross them off as you go.</p>
+        <div class="bucket"><span class="done">✓ Arenal Volcano</span><span class="done">✓ Kyoto in spring</span><span>Patagonia</span><span>Northern lights</span><span>Machu Picchu</span></div>
+      </div>
+      <div class="tile t-gold span-2 rv d2">
+        <div class="ic"><i class="ph-duotone ph-ticket"></i></div>
+        <h3>Book activities direct</h3>
+        <p>Find top-rated excursions nearby and book with the operator. Fjora adds no booking fees.</p>
+        <div class="act"><img src="assets/img/rafting.jpg" alt=""><div><b>Balsa River Rafting</b><small>★ 4.9 · 986 reviews</small></div><span class="go">Book</span></div>
+      </div>
+      <div class="tile t-teal span-3 rv">
+        <div class="ic"><i class="ph-duotone ph-users-four"></i></div>
+        <h3>Shared journeys</h3>
+        <p>Add Companions as collaborators. Everyone sees the same itinerary, budget and packing list, so the group chat stops asking "wait, what time is the shuttle?"</p>
+        <div class="collab"><div class="stack"><img src="assets/people/maya.jpg" alt=""><img src="assets/people/lucas.jpg" alt=""><img src="assets/people/priya.jpg" alt=""><img src="assets/people/jonas.jpg" alt=""></div><span>Maya, Lucas, Priya &amp; Jonas are editing <b style="color:var(--ink)">Nicoya Coast · Nov</b></span></div>
+      </div>
+      <div class="tile t-coral span-3 rv d1">
+        <div class="ic"><i class="ph-duotone ph-cloud-slash"></i></div>
+        <h3>Works off the grid</h3>
+        <p>No signal at the waterfall? Check in anyway. Fjora queues the check-in and syncs it as soon as you're back online.</p>
+        <div class="offline"><i class="ph-duotone ph-cloud-arrow-up"></i><span><b>2 check-ins waiting</b> · will sync when you're back online</span></div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="section" id="waitlist">
+<!-- ================= DEMO PLAYER ================= -->
+<section class="section" id="demo">
   <div class="wrap">
-    <div class="callout">
-      <p class="word" style="margin-bottom:28px;">Be first to know when Fjora lands.</p>
-      <form class="hero-form" id="waitlistForm2" style="margin:0 auto;">
-        <input type="email" id="emailInput2" placeholder="you@email.com" required autocomplete="email">
-        <button type="submit">Join the waitlist</button>
-      </form>
-      <div id="formMsg2" class="mono" style="margin-top:14px; font-size:12px; color:var(--teal); min-height:18px;"></div>
+    <div class="center sec-head">
+      <span class="eyebrow rv">See it in action</span>
+      <h2 class="h2 rv">Watch it <em>work.</em></h2>
+      <p class="lede rv">Short walkthroughs of the things you'll do most. Pick one, or let them play.</p>
     </div>
+    <div class="demo-tabs rv" id="demoTabs"></div>
+    <div class="demo">
+      <div class="phone-wrap"><div class="phone"><div class="screen" id="demoScreen"></div></div></div>
+      <div>
+        <div class="demo-steps" id="demoSteps"></div>
+        <div class="demo-ctrl"><button id="demoPlay" aria-label="Pause"><i class="ph-fill ph-pause"></i></button><span id="demoLabel">Autoplay on</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SAFETY ================= -->
+<section class="section light" id="safety">
+  <div class="wrap">
+    <div class="sec-head" style="max-width:760px">
+      <span class="eyebrow rv">06 · Safety, built in</span>
+      <h2 class="h2 rv">Meet strangers. <em>Someone always knows.</em></h2>
+      <p class="lede rv">Meeting new people is the whole point, so we built the safety net into the product instead of leaving it to the fine print. Your Trusted Contact doesn't need the app, just a phone number.</p>
+    </div>
+    <div class="safety-flow">
+      <div class="sf rv"><div class="ic"><i class="ph-duotone ph-address-book"></i></div><h4>Add a Trusted Contact</h4><p>A parent, a partner, your best friend back home. Set it once in Settings.</p></div>
+      <div class="sf rv d1"><div class="ic"><i class="ph-duotone ph-chat-circle-text"></i></div><h4>Join a Gather</h4><p>When you RSVP, they get a text with where you're going and when.</p>
+        <div class="sms"><small>Text message · 6:12 PM</small>Maya is meeting a Fjora group at Lava Lounge, La Fortuna at 7:00 PM tonight.</div></div>
+      <div class="sf rv d2"><div class="ic"><i class="ph-duotone ph-house-line"></i></div><h4>"Back safe?"</h4><p>After the meetup, Fjora asks if you made it home. One tap closes the loop.</p>
+        <div class="safe-prompt"><b>Did you make it back safe?</b><div><span class="y">I'm back</span><span class="n">Not yet</span></div></div></div>
+      <div class="sf rv d3"><div class="ic"><i class="ph-duotone ph-bell-ringing"></i></div><h4>The safety net</h4><p>If you don't answer within the grace period, your contact gets a text anyway, automatically.</p></div>
+    </div>
+    <div class="no-gps rv">
+      <div class="ic"><i class="ph-duotone ph-map-pin-simple-area"></i></div>
+      <div><b>We will never track your live location.</b><p>Gathers use a place you choose: the bar, the trailhead, the hostel. Your GPS is never involved, and live location sharing is off. That's a promise built into the product, not a setting buried in a menu.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COMPARE ================= -->
+<section class="section" id="compare">
+  <div class="wrap">
+    <div class="center sec-head">
+      <span class="eyebrow rv">Why Fjora</span>
+      <h2 class="h2 rv">Not another <em>feed.</em></h2>
+      <p class="lede rv">You already have apps for showing off, swiping, and drowning in hostel WhatsApp groups. Fjora is the one for actually meeting people.</p>
+    </div>
+    <div class="compare rv"><div class="compare-scroll">
+      <table>
+        <thead><tr><th></th><th class="us">Fjora</th><th>Social feeds</th><th>Swipe &amp; match apps</th><th>Hostel group chats</th></tr></thead>
+        <tbody>
+          <tr><td>Built to meet up in real life</td><td class="us"><i class="ph-fill ph-check-circle yes"></i></td><td><i class="ph ph-x no-i"></i></td><td><span class="meh">1-on-1 only</span></td><td><span class="meh">If you're in the group</span></td></tr>
+          <tr><td>Connections earned by meeting</td><td class="us"><i class="ph-fill ph-check-circle yes"></i></td><td><i class="ph ph-x no-i"></i></td><td><i class="ph ph-x no-i"></i></td><td><i class="ph ph-x no-i"></i></td></tr>
+          <tr><td>No follower counts or vanity metrics</td><td class="us"><i class="ph-fill ph-check-circle yes"></i></td><td><i class="ph ph-x no-i"></i></td><td><i class="ph-fill ph-check-circle" style="color:var(--mist-dim);font-size:20px"></i></td><td><i class="ph-fill ph-check-circle" style="color:var(--mist-dim);font-size:20px"></i></td></tr>
+          <tr><td>Never uses your live location</td><td class="us"><i class="ph-fill ph-check-circle yes"></i></td><td><span class="meh">Varies</span></td><td><i class="ph ph-x no-i"></i></td><td><span class="meh">Varies</span></td></tr>
+          <tr><td>Trusted Contact safety check-ins</td><td class="us"><i class="ph-fill ph-check-circle yes"></i></td><td><i class="ph ph-x no-i"></i></td><td><i class="ph ph-x no-i"></i></td><td><i class="ph ph-x no-i"></i></td></tr>
+          <tr><td>Private-by-default journal</td><td class="us"><i class="ph-fill ph-check-circle yes"></i></td><td><i class="ph ph-x no-i"></i></td><td><i class="ph ph-x no-i"></i></td><td><i class="ph ph-x no-i"></i></td></tr>
+          <tr><td>Itinerary, budget &amp; packing in one place</td><td class="us"><i class="ph-fill ph-check-circle yes"></i></td><td><i class="ph ph-x no-i"></i></td><td><i class="ph ph-x no-i"></i></td><td><i class="ph ph-x no-i"></i></td></tr>
+          <tr><td>A map of everywhere you've been</td><td class="us"><i class="ph-fill ph-check-circle yes"></i></td><td><i class="ph ph-x no-i"></i></td><td><i class="ph ph-x no-i"></i></td><td><i class="ph ph-x no-i"></i></td></tr>
+        </tbody>
+      </table>
+    </div></div>
+  </div>
+</section>
+
+<!-- ================= LAUNCH ================= -->
+<section class="section" id="launch" style="padding-top:20px">
+  <div class="wrap">
+    <div class="sec-head" style="max-width:720px">
+      <span class="eyebrow rv"><span class="dot"></span>First stop</span>
+      <h2 class="h2 rv">Pura vida, <em>meet Fjora.</em></h2>
+      <p class="lede rv">We're launching where travelers already want to meet: Costa Rica's adventure capital and its best surf town. Expect hosted meetups, partner hostels and a map that's already busy when you open it.</p>
+    </div>
+    <div class="launch">
+      <div class="town rv"><img src="assets/img/arenal.jpg" alt="Arenal Volcano above the rainforest"><span class="tag">Week 1 · La Fortuna</span>
+        <h3>La Fortuna &amp; Arenal</h3>
+        <p>Everyone's here to do something: canyon, raft, hike the volcano, soak in the hot springs. Find a crew to split the tour and fill the shuttle.</p>
+        <div class="chips"><span>Canyoning</span><span>Hot springs</span><span>Waterfall hike</span><span>Hanging bridges</span></div>
+      </div>
+      <div class="town rv d1"><img src="assets/img/surf.jpg" alt="Surfer riding a turquoise wave"><span class="tag">Week 2 · Santa Teresa</span>
+        <h3>Santa Teresa</h3>
+        <p>Surf camps, yoga decks and the best sunsets on the Nicoya coast. Find a dawn-patrol buddy and a table for dinner after.</p>
+        <div class="chips"><span>Dawn surf</span><span>Sunset sessions</span><span>Yoga</span><span>Beach bonfires</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PARTNERS ================= -->
+<section class="section light" id="partners">
+  <div class="wrap">
+    <div class="center sec-head">
+      <span class="eyebrow rv">Founding partners</span>
+      <h2 class="h2 rv">Run a hostel? Make travel content? <em>Let's build this together.</em></h2>
+      <p class="lede rv">We're piloting with a small number of properties and creators this season. Founding partner terms are limited.</p>
+    </div>
+    <div class="partners">
+      <div class="pcard rv">
+        <div class="ic"><i class="ph-duotone ph-bed"></i></div>
+        <h3>Hostels &amp; properties</h3>
+        <p>Your guests already want to meet each other and find things to do. Fjora gives them that, at no cost to you.</p>
+        <ul>
+          <li><i class="ph-fill ph-check-circle"></i>A free digital community board for your guests</li>
+          <li><i class="ph-fill ph-check-circle"></i>Featured in-app as a partner location, visible to every Fjora traveler nearby</li>
+          <li><i class="ph-fill ph-check-circle"></i>Founding-partner status as we expand to new cities</li>
+          <li><i class="ph-fill ph-check-circle"></i>A stipend toward food &amp; drinks if you host a meetup night</li>
+        </ul>
+        <a href="#" class="btn btn-ghost" data-link="partner-hostel"><i class="ph ph-envelope-simple"></i> Become a partner property</a>
+      </div>
+      <div class="pcard rv d1">
+        <div class="ic"><i class="ph-duotone ph-camera"></i></div>
+        <h3>Creators &amp; hosts</h3>
+        <p>Flat, honest terms. Paid on delivery, never tied to views.</p>
+        <ul>
+          <li><i class="ph-fill ph-check-circle"></i><span><b>One post:</b> lifetime Founding Traveler access + a flat honorarium</span></li>
+          <li><i class="ph-fill ph-check-circle"></i><span><b>Host a meetup:</b> we cover the venue, plus a hosting fee and an in-app Gather for your event</span></li>
+          <li><i class="ph-fill ph-check-circle"></i><span><b>Referral partner:</b> your own code, with a reward for every verified signup, paid monthly</span></li>
+        </ul>
+        <a href="#" class="btn btn-ghost" data-link="partner-creator"><i class="ph ph-envelope-simple"></i> Apply as a creator</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="center sec-head">
+      <span class="eyebrow rv">Questions</span>
+      <h2 class="h2 rv">Good to <em>know.</em></h2>
+    </div>
+    <div class="faq rv">
+      <details><summary>When can I download Fjora?<i class="ph ph-plus"></i></summary><p>Fjora is launching on iOS and Android, starting in Costa Rica this season. Join the waitlist and we'll email you once on launch day. No spam, ever.</p></details>
+      <details><summary>Does Fjora track my location?<i class="ph ph-plus"></i></summary><p>No. Gathers use a place you choose from search, like a bar, a trailhead or a hostel. Your device's GPS is never used for Gathers, and live location sharing is permanently off.</p></details>
+      <details><summary>What's a Companion?<i class="ph ph-plus"></i></summary><p>Our version of a friend or follower, except it means something. A Companion is someone you've actually met while traveling. You add each other by username, their check-ins appear in your Explore feed, and you can plan journeys together.</p></details>
+      <details><summary>Who can see my journal?<i class="ph ph-plus"></i></summary><p>Only you, by default. Every entry has its own "share with Companions" toggle, so sharing is a choice you make each time.</p></details>
+      <details><summary>How do Trusted Contacts work? Do they need the app?<i class="ph ph-plus"></i></summary><p>They just need a phone number. When you join a Gather, your Trusted Contact gets a text with the place and time. Afterward, Fjora asks if you made it back safe. If you don't answer within the grace period, your contact is texted anyway.</p></details>
+      <details><summary>Can I use Fjora outside Costa Rica?<i class="ph ph-plus"></i></summary><p>Yes. Your map, check-ins, journal, itineraries, budgets and packing lists work anywhere in the world. Costa Rica is simply where we're kick-starting Gathers and hosted meetups first.</p></details>
+      <details><summary>I run a hostel or create travel content. How do I get involved?<i class="ph ph-plus"></i></summary><p>See the founding partner section above, or email us. We're working with a limited number of properties and creators this season.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FINAL CTA ================= -->
+<section class="final" id="download">
+  <img src="assets/img/silhouette.jpg" alt="">
+  <div class="wrap">
+    <img src="assets/seal-dark.png" alt="" style="width:84px;height:84px;margin:0 auto" class="rv">
+    <h2 class="h-display rv d1">Your next Companion is <em>one Gather away.</em></h2>
+    <p class="lede rv d2">Be first in line when Fjora lands. Waitlist members get launch-day access.</p>
+    <div class="store-row rv d3">
+      <a href="#" class="store" data-link="ios"><i class="ph-fill ph-apple-logo"></i><div><small>Download on the</small><b>App Store</b></div><span class="soon">Soon</span></a>
+      <a href="#" class="store" data-link="android"><i class="ph-fill ph-google-play-logo"></i><div><small>Get it on</small><b>Google Play</b></div><span class="soon">Soon</span></a>
+    </div>
+    <form class="waitlist rv d3" data-waitlist>
+      <input type="email" placeholder="you@email.com" required autocomplete="email" aria-label="Email address">
+      <button class="btn btn-gold" type="submit">Join the waitlist</button>
+    </form>
+    <div class="form-msg" aria-live="polite" style="padding:0;text-align:center"></div>
+    <p class="signin-line rv">Already have an account? <a href="#" data-link="signin">Sign in →</a></p>
   </div>
 </section>
 
 <footer>
-  <div class="logo">Fjora</div>
-  <p>&copy; 2026 Fjora. Travel with people you actually meet.</p>
+  <div class="wrap">
+    <div class="foot">
+      <div><a href="#top" class="brand"><img src="assets/seal-dark.png" alt=""><span>Fjora</span></a><p>The travel app for people you actually meet. Met, not matched.</p></div>
+      <div><h5>Product</h5><ul><li><a href="#gather">Gather</a></li><li><a href="#world">Your World</a></li><li><a href="#toolkit">Toolkit</a></li><li><a href="#safety">Safety</a></li></ul></div>
+      <div><h5>Company</h5><ul><li><a href="#partners">Partners</a></li><li><a href="#launch">Costa Rica launch</a></li><li><a href="#" data-link="contact">Contact</a></li></ul></div>
+      <div><h5>Get Fjora</h5><ul><li><a href="#" data-link="ios">App Store</a></li><li><a href="#" data-link="android">Google Play</a></li><li><a href="#" data-link="signin">Sign in</a></li></ul></div>
+    </div>
+    <div class="foot-bottom"><span>© 2026 Fjora. All rights reserved.</span><span>App screens show sample accounts for illustration.</span></div>
+  </div>
 </footer>
 
-<script>
-/*
-  WAITLIST SUBMISSION
-  --------------------------------------------------------------
-  Posts new emails straight into the `waitlist` table in the same
-  Supabase project backing wayfare-api (see its prisma/schema.prisma
-  for the Waitlist model + migrations for the table/RLS/policy).
-  RLS restricts the anon role to INSERT only — this page can add an
-  email but can't read, edit, or delete the list back out.
-*/
-const SUPABASE_URL = "https://vzvckpiaxyqxzsptxmfo.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ6dmNrcGlheHlxeHpzcHR4bWZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY0MTE3MTYsImV4cCI6MjEwMTk4NzcxNn0.Gtw7CQ70aUeOyKInPNJXx0-F-OPgkNNCnJQa8CO6uTs";
+<div class="toast" id="toast"><i class="ph-duotone ph-rocket-launch"></i><span id="toastMsg"></span></div>
 
-async function submitEmail(email, msgEl){
-  if(!email || !email.includes('@')){
-    msgEl.textContent = "Please enter a valid email.";
-    msgEl.style.color = "#FF6B4E";
-    return;
-  }
-  msgEl.textContent = "Joining...";
-  msgEl.style.color = "#C9C2B0";
-
-  // If Supabase isn't configured yet, fall back to a friendly message
-  // instead of failing silently.
-  if(SUPABASE_URL.includes("YOUR_") || SUPABASE_ANON_KEY.includes("YOUR_")){
-    console.warn("Supabase not configured yet — see comment block above.");
-    msgEl.textContent = "Thanks! (Waitlist storage not connected yet — see code comments.)";
-    msgEl.style.color = "#4FAE9B";
-    return;
-  }
-
-  try{
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "apikey": SUPABASE_ANON_KEY,
-        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-        "Prefer": "return=minimal"
-      },
-      body: JSON.stringify({ email })
-    });
-    if(res.ok || res.status === 201){
-      msgEl.textContent = "You're on the list — we'll email you at launch.";
-      msgEl.style.color = "#4FAE9B";
-    } else if(res.status === 409){
-      msgEl.textContent = "You're already on the list!";
-      msgEl.style.color = "#4FAE9B";
-    } else {
-      throw new Error("Request failed");
-    }
-  } catch(err){
-    msgEl.textContent = "Something went wrong — please try again.";
-    msgEl.style.color = "#FF6B4E";
-  }
-}
-
-document.getElementById('waitlistForm').addEventListener('submit', function(e){
-  e.preventDefault();
-  const email = document.getElementById('emailInput').value.trim();
-  submitEmail(email, document.getElementById('formMsg'));
-});
-document.getElementById('waitlistForm2').addEventListener('submit', function(e){
-  e.preventDefault();
-  const email = document.getElementById('emailInput2').value.trim();
-  submitEmail(email, document.getElementById('formMsg2'));
-});
-</script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js" defer></script>
+<script src="assets/site.js" defer></script>
 </body>
 </html>
